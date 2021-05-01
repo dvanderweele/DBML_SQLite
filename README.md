@@ -2,9 +2,9 @@
 
 This is a simple package built on top of [the PyDBML package by Vanderhoof](https://github.com/Vanderhoof/PyDBML). It allows you, within certain constraints, to generate valid SQLite from `.dbml` files for your Python programs.
 
-## Using the Library
+## Installation
 
-
+## Usage 
 
 ## Writing SQLite Compatible DBML
 
