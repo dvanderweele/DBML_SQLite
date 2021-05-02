@@ -96,17 +96,24 @@ INSERT INTO message_status(type, seq) VALUES ('failed', 5);
 I refer to this as `full` emulation, and it is the default. The alternative is `half` emulation, and you use it as follows in your Python code:
 
 ```
-
+from dbml_sqlite import toSQLite
+output = toSQLite(dbml, emulation="half")
 ```
 
 If used on the DBML above, the following SQLite is produced:
 
 ```
-
+CREATE TABLE message (
+    id INTEGER PRIMARY KEY,
+    body TEXT NOT NULL,
+    status TEXT CHECK( status IN ('unsent', 'pending', 'sent', 'delivered', 'failed') ) NOT NULL 
+);
 ```
 
 Note that in the case of `full` emulation, you will need to turn foreign key constraint as follows:
 
 ```
-
+conn = sqlite3.connect("default.db")
+conn.execute("PRAGMA foreign_keys = 1")
+cur = conn.cursor()
 ```
