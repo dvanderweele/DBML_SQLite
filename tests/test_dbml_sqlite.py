@@ -1,3 +1,4 @@
+import pytest
 from dbml_sqlite import __version__
 from dbml_sqlite import toSQLite, validDBMLFile
 
@@ -6,9 +7,9 @@ def test_version():
 
 def test_toSQLite():
     assert isinstance(toSQLite(), str)
+    with pytest.raises(ValueError):
+        toSQLite('asdf')
 
 def test_validDBMLFile():
     assert validDBMLFile('asd.dbml')
-    assert validDBMLFile('asd.DBML')
-    assert validDBMLFile('ASD.DBML')
     assert not validDBMLFile('asd')
