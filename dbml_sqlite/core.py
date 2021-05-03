@@ -1,3 +1,4 @@
+import re
 from pydbml import PyDBML 
 from pydbml.classes import Enum
 from pathlib import Path
@@ -28,7 +29,7 @@ def toSQLite(dbml=".", emulation="full"):
             results.append(processFile(target), emulation)
     else:
         raise ValueError(f'Argument "{dbml}" is not a file or a directory.') 
-    return " ".join(results)
+    return "\n\n".join(results)
 
 def validDBMLFile(s):
     """
@@ -148,4 +149,8 @@ def coerceColType(colType):
     blobs = ('TINYBLOB', 'SMALLBLOB', 'MEDIUMBLOB', 'LONGBLOB', 'BYTE', 'BYTES')
     if colType in blobs:
         return 'BLOB'
-    raise ValueError(f'Could not figure out how to coerce "{colType}" to valid SQLite type.')
+    res = re.search("VARCHAR\(+[0-9]\)", colType)
+    if res:
+        return 'TEXT'
+    else:
+        raise ValueError(f'Could not figure out how to coerce "{colType}" to valid SQLite type.')
