@@ -9,6 +9,7 @@ def test_toSQLite():
     assert isinstance(toSQLite(), str)
     with pytest.raises(ValueError):
         toSQLite('asdf')
+    print(toSQLite('test.dbml'))
 
 def test_validDBMLFile():
     assert validDBMLFile('asd.dbml')
@@ -21,4 +22,9 @@ def test_coercion():
     assert coerceColType('integer') == 'INTEGER'
     assert coerceColType('tinyint') == 'INTEGER'
     assert coerceColType('float') == 'REAL'
-
+    assert coerceColType('varchar') == 'TEXT'
+    assert coerceColType('varchar(1)') == 'TEXT'
+    assert coerceColType('varchar(0123)') == 'TEXT'
+    with pytest.raises(ValueError):
+        coerceColType('varchar(a)')
+    assert coerceColType('byte') == 'BLOB'
