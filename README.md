@@ -20,7 +20,7 @@ For best results, it is recommended to stick to the following valid SQLite types
 | TEXT        | str         |
 | BLOB        | bytes       |
 
-Any of the Python types above as well as any of the types in the table below, if found in your DBML, will be converted to the corresponding SQLite Type. Note the type insensitivity of the mappings; all types are all uppercased for the purposes of comparison.
+Any of the Python types above as well as any of the types in the table below, if found in your DBML, will be converted to the corresponding SQLite Type. Note the case insensitivity of the mappings; all types are all uppercased for the purposes of comparison.
 
 | Foreign Type | SQLite Type |
 |      :-:     |      :-:    |

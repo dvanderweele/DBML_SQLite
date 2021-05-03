@@ -1,4 +1,5 @@
-from pydbml import PyDBML, Enum
+from pydbml import PyDBML 
+from pydbml.classes import Enum
 from pathlib import Path
 
 def toSQLite(dbml=".", emulation="full"):
@@ -65,17 +66,30 @@ def processFile(target, emulationMode):
 
 def processEnum(enum):
     segments = []
-    segments.append(f'CREATE TABLE {enum.name} IF NOT EXISTS (id INTEGER PRIMARY KEY, type TEXT NOT NULL, seq INTEGER NOT NULL);')
+    segments.append(f'CREATE TABLE {enum.name} IF NOT EXISTS (\nid INTEGER PRIMARY KEY, \ntype TEXT NOT NULL, \nseq INTEGER NOT NULL\n);')
     for i, v in enumerate(enum.items):
         segments.append(f'INSERT INTO {enum.name}(type, seq) VALUES ({v.name}, {i + 1});')
-    return " ".join(segments)
+    return "\n".join(segments)
 
 def processTable(table, emulationMode):
     segments = []
     segments.append(f'CREATE TABLE {table.name} IF NOT EXISTS (')
     for col in table.columns:
         segments.append(processColumn(col), emulationMode)
+    for ref in table.refs:
+        segments.append(processRef(ref, table))
     segments.append(');')
+    return "\n".join(segments)
+
+def processRef(ref, table):
+    segments = []
+    segments.append('FOREIGN KEY(')
+    if table == ref.table1:
+        segments.append(f'{ref.column1} REFERENCES {ref.table2}({ref.column2}));')
+    elif table == ref.table2:
+        segments.append(f'{ref.column2} REFERENCES {ref.table1}({ref.column1}));')
+    else: 
+        raise Error('Error processing table references to build foreign key statements.')
     return "".join(segments)
 
 def processColumn(column, emulationMode):
@@ -83,7 +97,14 @@ def processColumn(column, emulationMode):
     segments.append(column.name)
     if isinstance(column.type, str):
         segments.append(column.type)
-        # column constraints
+        if column.pk:
+            segments.append('PRIMARY KEY')
+        if column.not_null:
+            segments.append('NOT NULL')
+        if column.unique:
+            segments.append('UNIQUE')
+        if column.default != None:
+            segments.append(f'DEFAULT {column.default}')
     elif isinstance(column.type, Enum):
         if emulationMode == 'full':
             segments.append(f'TEXT NOT NULL REFERENCES {column.type.name}(type)')
@@ -96,7 +117,7 @@ def processColumn(column, emulationMode):
             segments.append(') NOT NULL')
     else:
         raise ValueError('Data type of column specification unknown.')
-    return "".join(segments)
+    return " ".join(segments)
 
 def coerceColType(colType):
     """ 
@@ -112,13 +133,16 @@ def coerceColType(colType):
     nativeTypes = ('NULL', 'INTEGER', 'REAL', 'TEXT', 'BLOB')
     if colType in nativeTypes:
         return colType
+    nils = ('NONE', 'NIL')
+    if colType in nils:
+        return 'NULL'
     integers = ('BOOL', 'BOOLEAN', 'INT', 'TINYINT', 'SMALLINT', 'MEDIUMINT', 'LONGINT', 'BIGINT', 'YEAR')
     if colType in integers:
         return 'INTEGER'
     reals = ('FLOAT', 'DOUBLE', 'DECIMAL', 'NUMERIC')
     if colType in reals:
         return 'REAL'
-    texts = ('DATE', 'DATETIME', 'TIMESTAMP', 'TIME', 'VARCHAR', 'TINYTEXT', 'SMALLTEXT', 'MEDIUMTEXT', 'LONGTEXT')
+    texts = ('STR', 'DATE', 'DATETIME', 'TIMESTAMP', 'TIME', 'VARCHAR', 'TINYTEXT', 'SMALLTEXT', 'MEDIUMTEXT', 'LONGTEXT')
     if colType in texts:
         return 'TEXT'
     blobs = ('TINYBLOB', 'SMALLBLOB', 'MEDIUMBLOB', 'LONGBLOB', 'BYTE', 'BYTES')
