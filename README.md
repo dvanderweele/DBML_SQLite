@@ -74,13 +74,13 @@ Table message {
 The following SQLite will be generated:
 
 ```
-CREATE TABLE message (
+CREATE TABLE message IF NOT EXISTS (
     id INTEGER PRIMARY KEY,
     body TEXT NOT NULL,
     status TEXT NOT NULL REFERENCES message_status(type)
 );
 
-CREATE TABLE message_status (
+CREATE TABLE message_status IF NOT EXISTS (
     id INTEGER PRIMARY KEY,
     type TEXT NOT NULL,
     seq INTEGER NOT NULL
@@ -103,7 +103,7 @@ output = toSQLite(dbml, emulation="half")
 If used on the DBML above, the following SQLite is produced:
 
 ```
-CREATE TABLE message (
+CREATE TABLE message IF NOT EXISTS (
     id INTEGER PRIMARY KEY,
     body TEXT NOT NULL,
     status TEXT CHECK( status IN ('unsent', 'pending', 'sent', 'delivered', 'failed') ) NOT NULL 
