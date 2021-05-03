@@ -20,13 +20,13 @@ def toSQLite(dbml=".", emulation="full"):
         raise ValueError(f'Argument "{dbml}" does not refer to an existing file or directory.')
     if p.is_file():
         if validDBMLFile(dbml):
-            results.append(processFile(p), emulation)
+            results.append(processFile(p, emulation))
         else:
             raise ValueError(f'Argument "{dbml}" is a path to a file, but it does not have a `.dbml` extension.')
     elif p.is_dir():
         targets = [f for f in p.glob('*.dbml')]
         for target in targets:
-            results.append(processFile(target), emulation)
+            results.append(processFile(target, emulation))
     else:
         raise ValueError(f'Argument "{dbml}" is not a file or a directory.') 
     return "\n\n".join(results)
@@ -76,7 +76,7 @@ def processTable(table, emulationMode):
     segments = []
     segments.append(f'CREATE TABLE {table.name} IF NOT EXISTS (')
     for col in table.columns:
-        segments.append(processColumn(col), emulationMode)
+        segments.append(processColumn(col, emulationMode))
     for ref in table.refs:
         segments.append(processRef(ref, table))
     segments.append(');')
@@ -149,7 +149,7 @@ def coerceColType(colType):
     blobs = ('TINYBLOB', 'SMALLBLOB', 'MEDIUMBLOB', 'LONGBLOB', 'BYTE', 'BYTES')
     if colType in blobs:
         return 'BLOB'
-    res = re.search("VARCHAR\(+[0-9]\)", colType)
+    res = re.search(r'VARCHAR\([0-9]+\)', colType)
     if res:
         return 'TEXT'
     else:

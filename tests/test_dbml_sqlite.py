@@ -9,7 +9,7 @@ def test_toSQLite():
     assert isinstance(toSQLite(), str)
     with pytest.raises(ValueError):
         toSQLite('asdf')
-    print(toSQLite('test.dbml'))
+    print(toSQLite('./tests/test.dbml'))
 
 def test_validDBMLFile():
     assert validDBMLFile('asd.dbml')
