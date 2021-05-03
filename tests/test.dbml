@@ -11,3 +11,19 @@ Table message {
     body text [not null]
     status message_status [not null]
 }
+
+enum zip_code {
+    920
+    414
+    800
+    900
+    555
+}
+
+Table contact {
+    id integer [primary key]
+    name varchar(0123) [default: "Joe Smith"]
+    phone mediumint [not null]
+    zip zip_code [not null]
+}
+

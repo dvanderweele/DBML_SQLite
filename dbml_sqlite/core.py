@@ -59,8 +59,9 @@ def processFile(target, emulationMode):
     """
     parsed = PyDBML(target)
     statements = []
-    for enum in parsed.enums:
-        statements.append(processEnum(enum))
+    if emulationMode == 'full':
+        for enum in parsed.enums:
+            statements.append(processEnum(enum))
     for table in parsed.tables:
         statements.append(processTable(table, emulationMode))
     return "\n\n".join(statements)
@@ -74,12 +75,11 @@ def processEnum(enum):
 
 def processTable(table, emulationMode):
     segments = []
-    segments.append(f'CREATE TABLE {table.name} IF NOT EXISTS (')
     for col in table.columns:
         segments.append(processColumn(col, emulationMode))
     for ref in table.refs:
         segments.append(processRef(ref, table))
-    return ",\n".join(segments) + '\n);'
+    return f'CREATE TABLE {table.name} IF NOT EXISTS (\n' + ",\n".join(segments) + '\n);'
 
 def processRef(ref, table):
     segments = []
@@ -104,7 +104,7 @@ def processColumn(column, emulationMode):
         if column.unique:
             segments.append('UNIQUE')
         if column.default != None:
-            segments.append(f'DEFAULT {column.default}')
+            segments.append(f'DEFAULT \'{column.default}\'')
     elif isinstance(column.type, Enum):
         if emulationMode == 'full':
             segments.append(f'TEXT NOT NULL REFERENCES {column.type.name}(type)')
