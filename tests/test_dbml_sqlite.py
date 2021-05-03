@@ -2,6 +2,10 @@ import pytest
 from dbml_sqlite import __version__
 from dbml_sqlite import toSQLite, validDBMLFile, coerceColType
 
+def SQLogger(inp):
+    with open('./tests/output.sql', 'w') as s:
+        s.write(inp)
+
 def test_version():
     assert __version__ == '0.1.0'
 
@@ -9,7 +13,7 @@ def test_toSQLite():
     assert isinstance(toSQLite(), str)
     with pytest.raises(ValueError):
         toSQLite('asdf')
-    print(toSQLite('./tests/test.dbml'))
+    SQLogger(toSQLite('./tests/test.dbml'))
 
 def test_validDBMLFile():
     assert validDBMLFile('asd.dbml')

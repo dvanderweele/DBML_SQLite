@@ -63,13 +63,13 @@ def processFile(target, emulationMode):
         statements.append(processEnum(enum))
     for table in parsed.tables:
         statements.append(processTable(table, emulationMode))
-    return " ".join(statements)
+    return "\n\n".join(statements)
 
 def processEnum(enum):
     segments = []
-    segments.append(f'CREATE TABLE {enum.name} IF NOT EXISTS (\nid INTEGER PRIMARY KEY, \ntype TEXT NOT NULL, \nseq INTEGER NOT NULL\n);')
+    segments.append(f'CREATE TABLE {enum.name} IF NOT EXISTS (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);')
     for i, v in enumerate(enum.items):
-        segments.append(f'INSERT INTO {enum.name}(type, seq) VALUES ({v.name}, {i + 1});')
+        segments.append(f'INSERT INTO {enum.name}(type, seq) VALUES (\'{v.name}\', {i + 1});')
     return "\n".join(segments)
 
 def processTable(table, emulationMode):
@@ -79,12 +79,11 @@ def processTable(table, emulationMode):
         segments.append(processColumn(col, emulationMode))
     for ref in table.refs:
         segments.append(processRef(ref, table))
-    segments.append(');')
-    return "\n".join(segments)
+    return ",\n".join(segments) + '\n);'
 
 def processRef(ref, table):
     segments = []
-    segments.append('FOREIGN KEY(')
+    segments.append('  FOREIGN KEY(')
     if table == ref.table1:
         segments.append(f'{ref.column1} REFERENCES {ref.table2}({ref.column2}));')
     elif table == ref.table2:
@@ -95,9 +94,9 @@ def processRef(ref, table):
 
 def processColumn(column, emulationMode):
     segments = []
-    segments.append(column.name)
+    segments.append(f'  {column.name}')
     if isinstance(column.type, str):
-        segments.append(column.type)
+        segments.append(coerceColType(column.type))
         if column.pk:
             segments.append('PRIMARY KEY')
         if column.not_null:
