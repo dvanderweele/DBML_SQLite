@@ -10,6 +10,7 @@ Table message {
     id integer [primary key]
     body text [not null]
     status message_status [not null]
+    contact_id integer [not null]
 }
 
 enum zip_code {
@@ -26,4 +27,6 @@ Table contact {
     phone mediumint [not null]
     zip zip_code [not null]
 }
+
+Ref: message.contact_id > contact.id [delete: cascade, update: no action]
 

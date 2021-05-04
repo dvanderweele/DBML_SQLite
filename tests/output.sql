@@ -23,7 +23,9 @@ INSERT INTO zip_code(type, seq) VALUES ('555', 5);
 CREATE TABLE message IF NOT EXISTS (
   id INTEGER PRIMARY KEY,
   body TEXT NOT NULL,
-  status TEXT NOT NULL REFERENCES message_status(type)
+  status TEXT NOT NULL REFERENCES message_status(type),
+  contact_id INTEGER NOT NULL,
+  FOREIGN KEY(contact_id) REFERENCES contact(id)
 );
 
 CREATE TABLE contact IF NOT EXISTS (

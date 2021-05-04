@@ -84,12 +84,7 @@ def processTable(table, emulationMode):
 def processRef(ref, table):
     segments = []
     segments.append('  FOREIGN KEY(')
-    if table == ref.table1:
-        segments.append(f'{ref.column1} REFERENCES {ref.table2}({ref.column2}));')
-    elif table == ref.table2:
-        segments.append(f'{ref.column2} REFERENCES {ref.table1}({ref.column1}));')
-    else: 
-        raise Error('Error processing table references to build foreign key statements.')
+    segments.append(f'{ref.col.name}) REFERENCES {ref.ref_table.name}({ref.ref_col.name})')
     return "".join(segments)
 
 def processColumn(column, emulationMode):
