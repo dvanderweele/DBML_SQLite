@@ -10,6 +10,22 @@ class MockEnum(Enum):
 class MockItem:
     def __init__(self, name):
         self.name = name
+class MockColumn:
+    def __init__(self, name, Type, pk, not_null, unique, default):
+        self.name = name
+        self.type = Type
+        self.pk = pk
+        self.not_null = not_null
+        self.unique = unique                                                       self.default = default
+class MockRef:
+    def __init__(self, col, ref_table, ref_col, on_update, on_delete):
+        self.col = col
+        self.ref_table = ref_table                                                 self.ref_col = ref_col                                                     self.on_update = on_update                                                 self.on_delete = on_delete
+class MockTable:
+    def __init__(self, name, columns, refs):
+        self.name = name
+        self.columns = columns
+        self.refs = refs
 
 def SQLogger(inp):
     with open('./tests/output.sql', 'w') as s:
