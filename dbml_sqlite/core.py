@@ -1,4 +1,5 @@
 import re
+import uuid
 from pydbml import PyDBML 
 from pydbml.classes import Enum
 from pathlib import Path
@@ -64,6 +65,21 @@ def processFile(target, emulationMode):
             statements.append(processEnum(enum))
     for table in parsed.tables:
         statements.append(processTable(table, emulationMode))
+    for table in parsed.tables:
+        for index in table.indexes:
+            parts = []
+            parts.append(f'CREATE {"UNIQUE" if index.unique else ""} INDEX IF NOT EXISTS ')
+            if index.name != "" and index.name != None:
+                parts.append(index.name)
+            else:
+                parts.append(str(uuid.uuid4()))
+            parts.append(f' ON {table.name} (')
+            for i, col in enumerate(index.subjects):
+                parts.append(col.name)
+                if i < len(index.subjects) - 1:
+                    parts.append(', ')
+            parts.append(');')
+            statements.append("".join(parts))
     return "\n\n".join(statements)
 
 def processEnum(enum):

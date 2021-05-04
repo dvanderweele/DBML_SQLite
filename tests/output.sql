@@ -34,3 +34,5 @@ CREATE TABLE contact IF NOT EXISTS (
   phone INTEGER NOT NULL,
   zip TEXT NOT NULL REFERENCES zip_code(type)
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS unique_contact ON contact (name, phone);

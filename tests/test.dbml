@@ -26,6 +26,10 @@ Table contact {
     name varchar(0123) [default: "Joe Smith"]
     phone mediumint [not null]
     zip zip_code [not null]
+
+    indexes {
+	(name, phone) [name: 'unique_contact', unique]
+    }
 }
 
 Ref: message.contact_id > contact.id [delete: cascade, update: no action]
