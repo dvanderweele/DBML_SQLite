@@ -16,11 +16,15 @@ class MockColumn:
         self.type = Type
         self.pk = pk
         self.not_null = not_null
-        self.unique = unique                                                       self.default = default
+        self.unique = unique
+        self.default = default
 class MockRef:
     def __init__(self, col, ref_table, ref_col, on_update, on_delete):
         self.col = col
-        self.ref_table = ref_table                                                 self.ref_col = ref_col                                                     self.on_update = on_update                                                 self.on_delete = on_delete
+        self.ref_table = ref_table
+        self.ref_col = ref_col
+        self.on_update = on_update
+        self.on_delete = on_delete
 class MockTable:
     def __init__(self, name, columns, refs):
         self.name = name
@@ -62,7 +66,12 @@ def test_process_column():
     pass
 
 def test_process_ref():
-    pass
+    fc = MockColumn('foreign_key', None, None, None, None, None)
+    t = MockTable('foreign_table', [fc], [])
+    lc = MockColumn('local_key', None, None, None, None, None)
+    r = MockRef(lc, t, fc, 'NO ACTION', 'NO ACTION')
+    o = processRef(r)
+    assert o == '  FOREIGN KEY(local_key) REFERENCES foreign_table(foreign_key) ON UPDATE NO ACTION ON DELETE NO ACTION'
 
 def test_process_enum():
     items = []
@@ -77,5 +86,4 @@ def test_process_table():
     pass
 
 # TEST_TODO                                                                # processColumn
-# processRef
 # processTable

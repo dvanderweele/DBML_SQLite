@@ -94,10 +94,10 @@ def processTable(table, emulationMode):
     for col in table.columns:
         segments.append(processColumn(col, emulationMode))
     for ref in table.refs:
-        segments.append(processRef(ref, table))
+        segments.append(processRef(ref))
     return f'CREATE TABLE {table.name} IF NOT EXISTS (\n' + ",\n".join(segments) + '\n);'
 
-def processRef(ref, table):
+def processRef(ref):
     segments = []
     segments.append('  FOREIGN KEY(')
     segments.append(f'{ref.col.name}) REFERENCES {ref.ref_table.name}({ref.ref_col.name})')
