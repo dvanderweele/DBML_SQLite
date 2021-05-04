@@ -117,3 +117,21 @@ conn = sqlite3.connect("default.db")
 conn.execute("PRAGMA foreign_keys = 1")
 cur = conn.cursor()
 ```
+
+## Testing and Coverage
+
+After all dependencies (including development dependencies) are installed, run the tests:
+
+```
+poetry run pytest
+```
+
+Alternatively, run the tests with coverage:
+```
+poetry run coverage run --source dbml_sqlite -m pytest
+```
+
+View the coverage report:
+```
+poetry run coverage report -m
+```
