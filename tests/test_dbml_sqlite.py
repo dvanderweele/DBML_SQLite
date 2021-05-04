@@ -42,6 +42,8 @@ def test_toSQLite():
     assert isinstance(toSQLite(), str)
     with pytest.raises(ValueError):
         toSQLite('asdf')
+    with pytest.raises(ValueError):
+        toSQLite('./tests/output.sql')
     SQLogger(toSQLite('./tests/test.dbml'))
 
 def test_validDBMLFile():
@@ -63,7 +65,22 @@ def test_coercion():
     assert coerceColType('byte') == 'BLOB'
 
 def test_process_column():
-    pass
+    # name, Type, pk, not_null, unique, default
+    c1 = MockColumn("c1", 1, None, None, None, None)
+    c2 = MockColumn("c2", 'INTEGER', True, False, False, None)
+    c3 = MockColumn("c3", 'REAL', False, True, True, None)
+    c4 = MockColumn('c4', 'TEXT', False, False, False, 'howdy')
+    i1 = MockItem('i1')
+    i2 = MockItem('i2')
+    e1 = MockEnum('e1', [i1, i2])
+    c5 = MockColumn('c5', e1, False, True, False, None)
+    with pytest.raises(ValueError):
+        processColumn(c1, 'full')
+    assert processColumn(c2, 'full') == '  c2 INTEGER PRIMARY KEY'
+    assert processColumn(c3, 'full') == '  c3 REAL NOT NULL UNIQUE'
+    assert processColumn(c4, 'full') == '  c4 TEXT DEFAULT \'howdy\''
+    assert processColumn(c5, 'full') == '  c5 TEXT NOT NULL REFERENCES e1(type)'
+    assert processColumn(c5, 'half') == '  c5 TEXT CHECK( c5 IN ( \'i1\', \'i2\' ) ) NOT NULL'
 
 def test_process_ref():
     fc = MockColumn('foreign_key', None, None, None, None, None)

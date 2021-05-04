@@ -129,7 +129,7 @@ def processColumn(column, emulationMode):
             for e in column.type.items:
                 enums.append(f"'{e.name}'")
             segments.append(", ".join(enums))
-            segments.append(') NOT NULL')
+            segments.append(') ) NOT NULL')
     else:
         raise ValueError('Data type of column specification unknown.')
     return " ".join(segments)
