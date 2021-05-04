@@ -25,7 +25,7 @@ CREATE TABLE message IF NOT EXISTS (
   body TEXT NOT NULL,
   status TEXT NOT NULL REFERENCES message_status(type),
   contact_id INTEGER NOT NULL,
-  FOREIGN KEY(contact_id) REFERENCES contact(id)
+  FOREIGN KEY(contact_id) REFERENCES contact(id) ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 CREATE TABLE contact IF NOT EXISTS (

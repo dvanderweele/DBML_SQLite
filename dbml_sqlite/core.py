@@ -85,6 +85,10 @@ def processRef(ref, table):
     segments = []
     segments.append('  FOREIGN KEY(')
     segments.append(f'{ref.col.name}) REFERENCES {ref.ref_table.name}({ref.ref_col.name})')
+    if ref.on_update:
+        segments.append(f' ON UPDATE {ref.on_update.upper()}')
+    if ref.on_delete:
+        segments.append(f' ON DELETE {ref.on_delete.upper()}')
     return "".join(segments)
 
 def processColumn(column, emulationMode):
