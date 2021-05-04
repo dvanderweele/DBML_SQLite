@@ -1,6 +1,15 @@
 import pytest
 from dbml_sqlite import __version__
-from dbml_sqlite import toSQLite, validDBMLFile, coerceColType
+from dbml_sqlite import toSQLite, validDBMLFile, coerceColType, processColumn, processRef, processEnum, processTable
+from pydbml.classes import Enum
+
+class MockEnum(Enum):
+    def __init__(self, name, items):
+        self.name = name
+        self.items = items
+class MockItem:
+    def __init__(self, name):
+        self.name = name
 
 def SQLogger(inp):
     with open('./tests/output.sql', 'w') as s:
@@ -32,3 +41,25 @@ def test_coercion():
     with pytest.raises(ValueError):
         coerceColType('varchar(a)')
     assert coerceColType('byte') == 'BLOB'
+
+def test_process_column():
+    pass
+
+def test_process_ref():
+    pass
+
+def test_process_enum():
+    items = []
+    items.append(MockItem('Joe'))
+    items.append(MockItem('Bob'))
+    items.append(MockItem('Jimmy'))
+    e = MockEnum('myEnum', items)
+    o = processEnum(e)
+    assert o == f'CREATE TABLE {e.name} IF NOT EXISTS (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);\nINSERT INTO {e.name}(type, seq) VALUES (\'Joe\', 1);\nINSERT INTO {e.name}(type, seq) VALUES (\'Bob\', 2);\nINSERT INTO {e.name}(type, seq) VALUES (\'Jimmy\', 3);'
+
+def test_process_table():
+    pass
+
+# TEST_TODO                                                                # processColumn
+# processRef
+# processTable
