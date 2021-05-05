@@ -117,10 +117,47 @@ def test_sqlite():
         os.remove('./tests/example.db')
     con = sqlite3.connect('./tests/example.db')
     s = toSQLite('./tests/test.dbml')
-    SQLogger(s)
     with con:
         con.executescript(s)
+        q = """
+            SELECT 
+                name
+            FROM 
+                sqlite_master 
+            WHERE 
+                type ='table' AND 
+                name NOT LIKE 'sqlite_%';
+        """
+        tables = con.cursor().execute(q)
+        tables = [t[0] for t in tables]
+        assert len(tables) == 4
+        assert 'message' in tables
+        assert 'message_status' in tables 
+        assert 'contact' in tables
+        assert 'zip_code' in tables 
     con.close()
 
+    if os.path.exists('./tests/example2.db'):
+        os.remove('./tests/example2.db')
+    con = sqlite3.connect('./tests/example2.db')
+    s = toSQLite('./tests/test.dbml', 'half')
+    with con:
+        con.executescript(s)
+        q = """
+            SELECT 
+                name
+            FROM 
+                sqlite_master
+            WHERE
+                type ='table' AND
+                name NOT LIKE 'sqlite_%';
+        """
+        tables = con.cursor().execute(q)
+        tables = [t[0] for t in tables]
+        assert len(tables) == 2
+        assert 'message' in tables
+        assert 'contact' in tables
+    con.close() 
+    
 # TEST_TODO
 # SQLite
