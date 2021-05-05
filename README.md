@@ -10,7 +10,7 @@ WIP
 
 Basic use case:
 
-```
+```py
 import sqlite3
 from dbml_sqlite import toSQLite
 
@@ -22,6 +22,17 @@ con.close()
 ```
 
 Instead of directly executing the produced SQLite DDL, feel free to write it to a file instead so you can manually inspect or manipulate it. The ddl output is valid SQLite, but it is still just a Python string so you could also programmatically manipulate it or compile it further if needed.
+
+Given a DBML file, the `toSQLite` function converts the contents to valid SQLite.
+
+Parameters:
+    dbml (str): a valid string for converting to a Path object. Should point to a `.dbml` file containing valid DBML *or* a directory containing such files. Default is a period, in which case current working directory will be searched and all such files will be parsed.
+    emulation (str): specifies emulation mode for enum functionality since it is not directly supported by SQLite. Default is "full", and the other option is "half".
+
+Returns:
+    str: one valid sequence of SQLite syntax.
+
+There are other functions in the package, but they are intended for internal use only within the package.
 
 ## Writing SQLite Compatible DBML
 
@@ -155,9 +166,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS unique_contact ON contact (name, phone);
 
 I refer to this as `full` emulation, and it is the default. The alternative is `half` emulation, and you use it as follows in your Python code:
 
-```
+```py
 from dbml_sqlite import toSQLite
-output = toSQLite(dbml, emulation="half")
+output = toSQLite('dbdiagram.dbml', emulation="half")
 ```
 
 If used on the DBML above, the following SQLite is produced:
@@ -183,7 +194,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS unique_contact ON contact (name, phone);
 
 Note that in the case of `full` emulation, you will need to turn on the foreign key constraint as follows:
 
-```
+```py
 conn = sqlite3.connect("default.db")
 conn.execute("PRAGMA foreign_keys = 1")
 cur = conn.cursor()
