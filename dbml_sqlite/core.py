@@ -85,7 +85,7 @@ def processFile(target, emulationMode, idxNameFunc=uuid.uuid4):
 
 def processEnum(enum):
     segments = []
-    segments.append(f'CREATE TABLE {enum.name} IF NOT EXISTS (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);')
+    segments.append(f'CREATE TABLE IF NOT EXISTS {enum.name} (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);')
     for i, v in enumerate(enum.items):
         segments.append(f'INSERT INTO {enum.name}(type, seq) VALUES (\'{v.name}\', {i + 1});')
     return "\n".join(segments)
@@ -96,7 +96,7 @@ def processTable(table, emulationMode):
         segments.append(processColumn(col, emulationMode))
     for ref in table.refs:
         segments.append(processRef(ref))
-    return f'CREATE TABLE {table.name} IF NOT EXISTS (\n' + ",\n".join(segments) + '\n);'
+    return f'CREATE TABLE IF NOT EXISTS {table.name} (\n' + ",\n".join(segments) + '\n);'
 
 def processRef(ref):
     segments = []
