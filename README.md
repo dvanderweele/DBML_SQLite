@@ -26,11 +26,13 @@ Instead of directly executing the produced SQLite DDL, feel free to write it to 
 Given a DBML file, the `toSQLite` function converts the contents to valid SQLite.
 
 Parameters:
-    dbml (str): a valid string for converting to a Path object. Should point to a `.dbml` file containing valid DBML *or* a directory containing such files. Default is a period, in which case current working directory will be searched and all such files will be parsed.
-    emulation (str): specifies emulation mode for enum functionality since it is not directly supported by SQLite. Default is "full", and the other option is "half".
+
+**dbml (str):** a valid string for converting to a Path object. Should point to a `.dbml` file containing valid DBML *or* a directory containing such files. Default is a period, in which case current working directory will be searched and all such files will be parsed.
+
+**emulation (str):** specifies emulation mode for enum functionality since it is not directly supported by SQLite. Default is "full", and the other option is "half".
 
 Returns:
-    str: one valid sequence of SQLite syntax.
+**str:** one valid sequence of SQLite syntax.
 
 There are other functions in the package, but they are intended for internal use only within the package.
 
@@ -123,7 +125,7 @@ Ref: message.contact_id > contact.id [delete: cascade, update: no action]
 
 The following SQLite will be generated:
 
-```
+```sqlite
 CREATE TABLE IF NOT EXISTS message_status (
   id INTEGER PRIMARY KEY,
   type TEXT NOT NULL UNIQUE,
@@ -173,7 +175,7 @@ output = toSQLite('dbdiagram.dbml', emulation="half")
 
 If used on the DBML above, the following SQLite is produced:
 
-```
+```sqlite
 CREATE TABLE IF NOT EXISTS message (
   id INTEGER PRIMARY KEY,
   body TEXT NOT NULL,
@@ -204,16 +206,18 @@ cur = conn.cursor()
 
 After all dependencies (including development dependencies) are installed, run the tests:
 
-```
+```bash
 poetry run pytest
 ```
 
 Alternatively, run the tests with coverage:
-```
+
+```bash
 poetry run coverage run --source dbml_sqlite -m pytest
 ```
 
 View the coverage report:
-```
+
+```bash
 poetry run coverage report -m
 ```
