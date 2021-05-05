@@ -1,0 +1,14 @@
+enum message_status {
+    unsent
+    pending
+    sent
+    delivered
+    failed
+}
+
+Table message {
+    id integer [primary key]
+    body text [not null]
+    status message_status [not null]
+    contact_id integer [not null]
+}

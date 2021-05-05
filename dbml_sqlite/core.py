@@ -1,4 +1,5 @@
 import re
+import os
 import uuid
 from pydbml import PyDBML 
 from pydbml.classes import Enum
@@ -17,6 +18,7 @@ def toSQLite(dbml=".", emulation="full"):
     """
     results = []
     p = Path(dbml)
+    p.resolve()
     if not p.exists():
         raise ValueError(f'Argument "{dbml}" does not refer to an existing file or directory.')
     if p.is_file():
@@ -57,7 +59,7 @@ def processFile(target, emulationMode, idxNameFunc=uuid.uuid4):
     Returns:
     str: A valid SQLite string.
     """
-    parsed = PyDBML(target)
+    parsed = PyDBML.parse_file(str(target))
     statements = []
     if emulationMode == 'full':
         for enum in parsed.enums:

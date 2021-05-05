@@ -1,4 +1,5 @@
 import pytest
+import sqlite3
 from dbml_sqlite import __version__
 from dbml_sqlite import toSQLite, validDBMLFile, coerceColType, processColumn, processRef, processEnum, processTable, processFile
 from pydbml.classes import Enum
@@ -106,12 +107,16 @@ def test_process_enum():
     assert o == f'CREATE TABLE {e.name} IF NOT EXISTS (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);\nINSERT INTO {e.name}(type, seq) VALUES (\'Joe\', 1);\nINSERT INTO {e.name}(type, seq) VALUES (\'Bob\', 2);\nINSERT INTO {e.name}(type, seq) VALUES (\'Jimmy\', 3);'
 
 def test_process_file():
-     p = Path('./tests/abc.dbml')
-     o = processFile(p, 'full', MockNameFunc)
-     assert o == 'CREATE TABLE mytab IF NOT EXISTS (\n  name TEXT,\n  phone INTEGER\n);\n\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);'
+    p = Path('./tests/abc.dbml')
+    o = processFile(p, 'full', MockNameFunc)
+    assert o == 'CREATE TABLE mytab IF NOT EXISTS (\n  name TEXT,\n  phone INTEGER\n);\n\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);'
 
 def test_sqlite():
-    pass
+    con = sqlite3.connect('./tests/example.db')
+    s = toSQLite('./tests/test2.dbml')
+    with con:
+        con.executescript(s)
+    con.close()
 
 # TEST_TODO
 # SQLite
