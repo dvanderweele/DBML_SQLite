@@ -141,6 +141,7 @@ def test_sqlite():
         os.remove('./tests/example2.db')
     con = sqlite3.connect('./tests/example2.db')
     s = toSQLite('./tests/test.dbml', 'half')
+    SQLogger(s)
     with con:
         con.executescript(s)
         q = """
