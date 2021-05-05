@@ -22,15 +22,14 @@ def toSQLite(dbml=".", emulation="full"):
     if p.is_file():
         if validDBMLFile(dbml):
             results.append(processFile(p, emulation))
+            return "\n\n".join(results)
         else:
             raise ValueError(f'Argument "{dbml}" is a path to a file, but it does not have a `.dbml` extension.')
     elif p.is_dir():
         targets = [f for f in p.glob('*.dbml')]
         for target in targets:
             results.append(processFile(target, emulation))
-    else:
-        raise ValueError(f'Argument "{dbml}" is not a file or a directory.') 
-    return "\n\n".join(results)
+        return "\n\n".join(results)
 
 def validDBMLFile(s):
     """
@@ -47,7 +46,7 @@ def validDBMLFile(s):
     else:
         return False
 
-def processFile(target, emulationMode):
+def processFile(target, emulationMode, idxNameFunc=uuid.uuid4):
     """
     Given a target `.dbml` file, parse and generate a valid SQLite string.
 
@@ -68,11 +67,11 @@ def processFile(target, emulationMode):
     for table in parsed.tables:
         for index in table.indexes:
             parts = []
-            parts.append(f'CREATE {"UNIQUE" if index.unique else ""} INDEX IF NOT EXISTS ')
+            parts.append(f'CREATE{" UNIQUE" if index.unique else ""} INDEX IF NOT EXISTS ')
             if index.name != "" and index.name != None:
                 parts.append(index.name)
             else:
-                parts.append(str(uuid.uuid4()))
+                parts.append(str(idxNameFunc()))
             parts.append(f' ON {table.name} (')
             for i, col in enumerate(index.subjects):
                 parts.append(col.name)

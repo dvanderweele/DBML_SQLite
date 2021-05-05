@@ -1,0 +1,8 @@
+Table mytab {
+    name text
+    phone integer
+
+    indexes {
+	(name, phone) [pk]
+    }
+}
