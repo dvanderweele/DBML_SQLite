@@ -53,7 +53,6 @@ def test_toSQLite():
     assert o.startswith('CREATE TABLE IF NOT EXISTS mytab ') 
     SQLogger(toSQLite('./tests/test.dbml'))
 
-
 def test_validDBMLFile():
     assert validDBMLFile('asd.dbml')
     assert not validDBMLFile('asd')
@@ -82,7 +81,7 @@ def test_process_column():
     i2 = MockItem('i2')
     e1 = MockEnum('e1', [i1, i2])
     c5 = MockColumn('c5', e1, False, True, False, None)
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         processColumn(c1, 'full')
     assert processColumn(c2, 'full') == '  c2 INTEGER PRIMARY KEY'
     assert processColumn(c3, 'full') == '  c3 REAL NOT NULL UNIQUE'
@@ -105,12 +104,12 @@ def test_process_enum():
     items.append(MockItem('Jimmy'))
     e = MockEnum('myEnum', items)
     o = processEnum(e)
-    assert o == f'CREATE TABLE IF NOT EXISTS {e.name} (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);\nINSERT INTO {e.name}(type, seq) VALUES (\'Joe\', 1);\nINSERT INTO {e.name}(type, seq) VALUES (\'Bob\', 2);\nINSERT INTO {e.name}(type, seq) VALUES (\'Jimmy\', 3);'
+    assert o == f'CREATE TABLE IF NOT EXISTS {e.name} (\n  id INTEGER PRIMARY KEY,\n  type TEXT NOT NULL UNIQUE,\n  seq INTEGER NOT NULL UNIQUE\n);\nINSERT INTO {e.name}(type, seq) VALUES (\'Joe\', 1);\nINSERT INTO {e.name}(type, seq) VALUES (\'Bob\', 2);\nINSERT INTO {e.name}(type, seq) VALUES (\'Jimmy\', 3);\n'
 
 def test_process_file():
     p = Path('./tests/abc.dbml')
-    o = processFile(p, 'full', MockNameFunc)
-    assert o == 'CREATE TABLE IF NOT EXISTS mytab (\n  name TEXT,\n  phone INTEGER\n);\n\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);'
+    o = processFile(p, 'full', True, True, MockNameFunc)
+    assert o == 'CREATE TABLE IF NOT EXISTS mytab (\n  name TEXT,\n  phone INTEGER\n);\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);'
 
 def test_sqlite():
     if os.path.exists('./tests/example.db'):
