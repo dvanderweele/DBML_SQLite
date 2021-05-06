@@ -159,6 +159,3 @@ def test_sqlite():
         assert 'message' in tables
         assert 'contact' in tables
     con.close() 
-    
-# TEST_TODO
-# SQLite
