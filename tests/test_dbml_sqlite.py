@@ -2,7 +2,7 @@ import pytest
 import os
 import sqlite3
 from dbml_sqlite import __version__
-from dbml_sqlite import toSQLite, validDBMLFile, coerceColType, processColumn, processRef, processEnum, processTable, processFile
+from dbml_sqlite import toSQLite, validDBMLFile, coerceColType, processColumn, processRef, processEnum, processTable, processFile, processIndex
 from pydbml.classes import Enum
 from pathlib import Path
 
@@ -35,6 +35,12 @@ class MockTable:
         self.name = name
         self.columns = columns
         self.refs = refs
+class MockIndex:
+    def __init__(self, name, unique, subjects, table):
+        self.name = name
+        self.unique = unique
+        self.subjects = subjects
+        self.table = table
 
 def SQLogger(inp):
     with open('./tests/output.sql', 'w') as s:
@@ -97,6 +103,23 @@ def test_process_ref():
     o = processRef(r)
     assert o == '  FOREIGN KEY(local_key) REFERENCES foreign_table(foreign_key) ON UPDATE NO ACTION ON DELETE NO ACTION'
 
+def test_process_table():
+    """
+processTable(table, emulationMode, tableExists=True, join=True)
+    1 ) multiple refs
+    2 ) joined output
+    """
+    lc1 = MockColumn('l1', 'INTEGER', None, None, None, None)
+    lc2 = MockColumn('l2', 'INTEGER', None, None, None, None)
+    fc1 = MockColumn('f1', 'INTEGER', None, None, None, None)
+    fc2 = MockColumn('f2', 'INTEGER', None, None, None, None)
+    fortab = MockTable('ft', [fc1, fc2], [])
+    r1 = MockRef(lc1, fortab, fc1, 'NO ACTION', 'NO ACTION')
+    r2 = MockRef(lc2, fortab, fc2, 'NO ACTION', 'NO ACTION')
+    loctab = MockTable('lt', [lc1, lc2], [r1, r2])
+    o = processTable(loctab, 'full', False, True)
+    assert o == "CREATE TABLE lt (\n  l1 INTEGER,\n  l2 INTEGER,\n  FOREIGN KEY(l1) REFERENCES ft(f1) ON UPDATE NO ACTION ON DELETE NO ACTION,\n  FOREIGN KEY(l2) REFERENCES ft(f2) ON UPDATE NO ACTION ON DELETE NO ACTION\n);\n"
+
 def test_process_enum():
     items = []
     items.append(MockItem('Joe'))
@@ -110,6 +133,14 @@ def test_process_file():
     p = Path('./tests/abc.dbml')
     o = processFile(p, 'full', True, True, MockNameFunc)
     assert o == 'CREATE TABLE IF NOT EXISTS mytab (\n  name TEXT,\n  phone INTEGER\n);\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);'
+
+def test_process_index():
+    mytab = MockTable('mytab', [], [])
+    col1 = MockColumn('col1', None, None, None, None, None)
+    col2 = MockColumn('col2', None, None, None, None, None)
+    idx = MockIndex('myidx', False, [col1, col2], mytab)
+    o = processIndex(mytab, idx, MockNameFunc, False, True)
+    assert o == "CREATE INDEX myidx ON mytab (col1, col2);" 
 
 def test_sqlite():
     if os.path.exists('./tests/example.db'):
