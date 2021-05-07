@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
+        poetry-version: [1.0, 1.1.6]
       fail-fast: false
 
     steps:
@@ -23,12 +24,9 @@ jobs:
         id: full-python-version
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Install poetry
-        run: |
-          curl -fsS -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
-          python get-poetry.py -y
-          echo "::set-env name=PATH::$HOME/.poetry/bin:$PATH"
-      - name: Configure poetry
-        run: poetry config virtualenvs.in-project true
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
       - name: Set up cache
         uses: actions/cache@v1
         id: cache
