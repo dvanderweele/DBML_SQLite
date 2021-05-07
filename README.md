@@ -1,3 +1,5 @@
+![DBML_SQLite](https://github.com/dvanderweele/DBML_SQLite/actions/workflows/test.yml/badge.svg)
+
 # DBML to SQLite Utility
 
 This is a simple package built on top of [the PyDBML package by Vanderhoof](https://github.com/Vanderhoof/PyDBML). It allows you, within certain constraints, to generate valid SQLite from `.dbml` files for your Python programs.
