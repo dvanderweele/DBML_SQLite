@@ -1,4 +1,5 @@
 ![DBML_SQLite](https://github.com/dvanderweele/DBML_SQLite/actions/workflows/test.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/dvanderweele/DBML_SQLite/badge.svg?branch=main)](https://coveralls.io/github/dvanderweele/DBML_SQLite?branch=main)
 
 # DBML to SQLite Utility
 
