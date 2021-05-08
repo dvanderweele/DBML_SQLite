@@ -50,9 +50,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Convert README
-        uses: docker://pandoc/core:2.9
-        with:
-          args: "-f markdown -t rst -o README.rst"
+        run:
+          sudo apt install pandoc -y && pandoc -f markdown -t rst -o README.rst
       - name: Commit Changes
         run: |
           git config --global user.name 'Dave VanderWeele'
