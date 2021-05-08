@@ -45,4 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           poetry run coveralls --service=github
-          
+      - name: Convert README
+        uses: docker://pandoc/core:2.9
+        with:
+          args: "-f markdown -t rst -o README.rst" # gets appended to pandoc command        
