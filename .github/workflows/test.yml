@@ -41,6 +41,8 @@ jobs:
       - name: Test
         run: poetry run coverage run --source dbml_sqlite -m pytest 
       - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
+        env:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          coveralls
+          
