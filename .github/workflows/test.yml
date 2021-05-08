@@ -45,7 +45,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           poetry run coveralls --service=github
+  readme_conversion:
+    runs-on: ubuntu-latest
+    steps:
       - name: Convert README
         uses: docker://pandoc/core:2.9
         with:
           args: "-f markdown -t rst -o README.rst" # gets appended to pandoc command        
+      - name: Commit Changes
+        run: |
+          git config --global user.name 'Dave VanderWeele'
+          git config --global user.email 'weele.me@gmail.com'
+          git commit -am "Readme Conversion"
+          git push
