@@ -44,6 +44,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          poetry install coveralls
-          coveralls
+          poetry install coveralls && coveralls
           
