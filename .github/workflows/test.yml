@@ -52,10 +52,10 @@ jobs:
       - name: Convert README
         uses: docker://pandoc/core:2.9
         with:
-          args: "-f markdown -t rst -o README.rst" # gets appended to pandoc command        
+          args: "-f markdown -t rst -o README.rst"
       - name: Commit Changes
         run: |
           git config --global user.name 'Dave VanderWeele'
           git config --global user.email 'weele.me@gmail.com'
-          git commit -am "Readme Conversion"
+          git add . && git commit -m "Readme Conversion"
           git push
