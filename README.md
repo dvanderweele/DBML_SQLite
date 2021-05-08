@@ -7,7 +7,17 @@ This is a simple package built on top of [the PyDBML package by Vanderhoof](http
 
 ## Installation
 
-WIP
+You'll need Python 3.x.
+
+```
+pip install dbml_sqlite
+```
+
+Or:
+
+```
+poetry add dbml_sqlite
+```
 
 ## Usage
 
@@ -336,3 +346,9 @@ Given a colType, coerce to closest native SQLite type and return that, otherwise
 
 **Returns:**
 + *str:* valid SQLite column type.
+
+## References
++ [PyDBML by Vanderhoof](https://github.com/Vanderhoof/PyDBML)
++ [Database Markup Language — DBML](https://www.dbml.org/home/#intro)
++ [SQLite Official](https://sqlite.org/index.html)
++ [SQLite3 Python Library](https://docs.python.org/3/library/sqlite3.html)
