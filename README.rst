@@ -3,7 +3,7 @@
 DBML to SQLite Utility
 ======================
 
-**v0.1.0**
+**v0.2.0**
 
 This is a simple package built on top of `the PyDBML package by
 Vanderhoof <https://github.com/Vanderhoof/PyDBML>`__. It allows you,
@@ -24,6 +24,9 @@ Or:
 ::
 
    poetry add dbml_sqlite
+
+Note that if you install the tool on your system globally with pip, you
+should be able to use the CLI anywhere.
 
 Usage
 -----
@@ -66,6 +69,48 @@ Returns: **str:** one valid sequence of SQLite syntax.
 There are other functions in the package, but they are intended for
 internal use only within the package. In-depth coverage of the rest of
 the API is at the end of this README.
+
+CLI
+---
+
+After installation, you can use the CLI from your terminal as follows:
+
+::
+
+   dbml_sqlite [OPTIONS] SRC
+
+SRC is mandatory and is the file containing dbml you want converted.
+
++---------------------------------------+-------------------------------+
+| Options                               | Meaning                       |
++=======================================+===============================+
+| -p, –print / -n, –no-print            | Whether to print output to    |
+|                                       | console. [default: print]     |
++---------------------------------------+-------------------------------+
+| -w, –write PATH                       | (Optional) File you want      |
+|                                       | output written to.            |
++---------------------------------------+-------------------------------+
+| -x, –execute PATH                     | (Optional) SQLite database    |
+|                                       | file for executing output DDL |
+|                                       | on. Will create file if it    |
+|                                       | doesn’t exist.                |
++---------------------------------------+-------------------------------+
+| -f, –full / -h, –half                 | Full emulation mode (separate |
+|                                       | tables) or half emulation     |
+|                                       | mode (check statements) for   |
+|                                       | any enums defined in your     |
+|                                       | dbml. [default: full]         |
++---------------------------------------+-------------------------------+
+| -t, –if-table-exists                  | (Optional) Add IF NOT EXISTS  |
+|                                       | language to CREATE TABLE      |
+|                                       | statements.                   |
++---------------------------------------+-------------------------------+
+| -i, –if-index-exists                  | (Optional) Add IF NOT EXISTS  |
+|                                       | language to CREATE INDEX      |
+|                                       | statements.                   |
++---------------------------------------+-------------------------------+
+| –help                                 | Show this message and exit.   |
++---------------------------------------+-------------------------------+
 
 Writing SQLite Compatible DBML
 ------------------------------
