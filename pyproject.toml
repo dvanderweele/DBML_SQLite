@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "DBML_SQLite"
-version = "0.1.0"
+version = "0.2.0"
 description = "A package that provides a CLI tool and a functional API for converting dbml files to SQLite DDL."
 authors = ["Dave VanderWeele <weele.me@gmail.com>"]
 repository = 'https://github.com/dvanderweele/DBML_SQLite'
