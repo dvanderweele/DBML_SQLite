@@ -1,9 +1,9 @@
 |DBML_SQLite| |Coverage Status|
 
-DBML to SQLite Utility
-======================
+*dbml_sqlite*
+=============
 
-**v0.2.0**
+**v0.2.1**
 
 This is a simple package built on top of `the PyDBML package by
 Vanderhoof <https://github.com/Vanderhoof/PyDBML>`__. It allows you,
