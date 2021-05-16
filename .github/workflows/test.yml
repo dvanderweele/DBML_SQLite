@@ -51,4 +51,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Convert README
         run:
-          sudo apt install pandoc -y && pandoc -f markdown -t rst -o READMEnew.rst README.md && cmp --silent README.rst READMEnew.rst || mv -f READMEnew.rst README.rst && git config --global user.name 'Dave VanderWeele' && git config --global user.email 'weele.me@gmail.com' && git add . && git commit -m "Readme Conversion" && git push
+          sudo apt install pandoc -y && pandoc -f markdown -t rst -o READMEnew.rst README.md && cmp --silent README.rst READMEnew.rst || mv -f READMEnew.rst README.rst && touch READMEnew.rst && rm READMEnew.rst && git config --global user.name 'Dave VanderWeele' && git config --global user.email 'weele.me@gmail.com' && git add . && git commit -m "Readme Conversion" && git push
