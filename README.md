@@ -3,13 +3,13 @@
 
 # *dbml_sqlite*
 
-**v0.2.1**
+**v0.2.2**
 
 This is a simple package built on top of [the PyDBML package by Vanderhoof](https://github.com/Vanderhoof/PyDBML). It allows you, within certain constraints, to generate valid SQLite from `.dbml` files for your Python programs.
 
 ## Installation
 
-You'll need Python 3.x.
+You'll need Python 3.6 or higher.
 
 ```
 pip install dbml_sqlite
