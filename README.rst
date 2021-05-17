@@ -3,7 +3,7 @@
 *dbml_sqlite*
 =============
 
-**v0.2.1**
+**v0.2.2**
 
 This is a simple package built on top of `the PyDBML package by
 Vanderhoof <https://github.com/Vanderhoof/PyDBML>`__. It allows you,
@@ -13,7 +13,7 @@ files for your Python programs.
 Installation
 ------------
 
-You’ll need Python 3.x.
+You’ll need Python 3.6 or higher.
 
 ::
 
