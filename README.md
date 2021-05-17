@@ -376,3 +376,5 @@ Given a colType, coerce to closest native SQLite type and return that, otherwise
 + [Database Markup Language — DBML](https://www.dbml.org/home/#intro)
 + [SQLite Official](https://sqlite.org/index.html)
 + [SQLite3 Python Library](https://docs.python.org/3/library/sqlite3.html)
+\n\n
+date
