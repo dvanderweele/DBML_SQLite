@@ -378,3 +378,5 @@ Given a colType, coerce to closest native SQLite type and return that, otherwise
 + [SQLite3 Python Library](https://docs.python.org/3/library/sqlite3.html)
 \n\n
 date
+nn
+Mon May 17 11:23:22 UTC 2021

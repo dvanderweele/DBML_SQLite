@@ -487,7 +487,7 @@ References
 -  `SQLite Official <https://sqlite.org/index.html>`__
 -  `SQLite3 Python
    Library <https://docs.python.org/3/library/sqlite3.html>`__
-   :raw-latex:`\n`:raw-latex:`\n` date
+   :raw-latex:`\n`:raw-latex:`\n` date nn Mon May 17 11:23:22 UTC 2021
 
 .. |DBML_SQLite| image:: https://github.com/dvanderweele/DBML_SQLite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/DBML_SQLite/badge.svg?branch=main
