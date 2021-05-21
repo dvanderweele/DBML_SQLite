@@ -488,7 +488,7 @@ References
 -  `SQLite3 Python
    Library <https://docs.python.org/3/library/sqlite3.html>`__
 
-Fri May 21 14:02:34 UTC 2021
+Fri May 21 14:06:50 UTC 2021
 
 .. |DBML_SQLite| image:: https://github.com/dvanderweele/DBML_SQLite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/DBML_SQLite/badge.svg?branch=main
