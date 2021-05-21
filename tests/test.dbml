@@ -28,8 +28,7 @@ Table contact {
     zip zip_code [not null]
 
     indexes {
-	(name, phone) [name: 'unique_contact', unique]
-    phone
+	    (name, phone) [name: 'unique_contact', unique]
     }
 }
 
