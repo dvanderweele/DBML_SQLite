@@ -3,7 +3,7 @@
 *dbml_sqlite*
 =============
 
-**v0.2.3**
+**v0.2.4**
 
 This is a simple package built on top of `the PyDBML package by
 Vanderhoof <https://github.com/Vanderhoof/PyDBML>`__. It allows you,
@@ -488,7 +488,7 @@ References
 -  `SQLite3 Python
    Library <https://docs.python.org/3/library/sqlite3.html>`__
 
-Mon May 17 11:34:05 UTC 2021
+Fri May 21 14:02:34 UTC 2021
 
 .. |DBML_SQLite| image:: https://github.com/dvanderweele/DBML_SQLite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/DBML_SQLite/badge.svg?branch=main
