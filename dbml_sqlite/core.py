@@ -108,13 +108,13 @@ def processIndex(table, index, idxNameFunc=uuid.uuid4, indexExists=True, join=Tr
     if index.name != "" and index.name != None:
         parts.append(index.name)
     else:
-        parts.append(str(idxNameFunc()))
+        parts.append(''.join(str(idxNameFunc()).split('-')))
     parts.append(f' ON {table.name} (')
     for i, col in enumerate(index.subjects):
         parts.append(col.name)
         if i < len(index.subjects) - 1:
             parts.append(', ')
-    parts.append(');')
+    parts.append(');\n')
     if join:
         parts = "".join(parts)
     return parts

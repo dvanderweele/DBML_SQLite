@@ -47,7 +47,7 @@ def SQLogger(inp):
         s.write(inp)
 
 def test_version():
-    assert __version__ == '0.1.0'
+    assert __version__ == '0.2.4'
 
 def test_toSQLite():
     assert isinstance(toSQLite(), str)
@@ -132,7 +132,7 @@ def test_process_enum():
 def test_process_file():
     p = Path('./tests/abc.dbml')
     o = processFile(p, 'full', True, True, MockNameFunc)
-    assert o == 'CREATE TABLE IF NOT EXISTS mytab (\n  name TEXT,\n  phone INTEGER\n);\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);'
+    assert o == 'CREATE TABLE IF NOT EXISTS mytab (\n  name TEXT,\n  phone INTEGER\n);\nCREATE INDEX IF NOT EXISTS mockname ON mytab (name, phone);\n'
 
 def test_process_index():
     mytab = MockTable('mytab', [], [])
@@ -140,7 +140,7 @@ def test_process_index():
     col2 = MockColumn('col2', None, None, None, None, None)
     idx = MockIndex('myidx', False, [col1, col2], mytab)
     o = processIndex(mytab, idx, MockNameFunc, False, True)
-    assert o == "CREATE INDEX myidx ON mytab (col1, col2);" 
+    assert o == "CREATE INDEX myidx ON mytab (col1, col2);\n" 
 
 def test_sqlite():
     if os.path.exists('./tests/example.db'):

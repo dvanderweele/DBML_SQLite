@@ -29,6 +29,7 @@ Table contact {
 
     indexes {
 	(name, phone) [name: 'unique_contact', unique]
+    phone
     }
 }
 
