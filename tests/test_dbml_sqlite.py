@@ -47,7 +47,7 @@ def SQLogger(inp):
         s.write(inp)
 
 def test_version():
-    assert __version__ == '0.3.0'
+    assert __version__ == '0.3.1'
 
 def test_toSQLite():
     assert isinstance(toSQLite(), str)
