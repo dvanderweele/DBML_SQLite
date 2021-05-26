@@ -261,7 +261,7 @@ def coerceColType(colType):
     texts = ('STR', 'DATE', 'DATETIME', 'TIMESTAMP', 'TIME', 'VARCHAR', 'TINYTEXT', 'SMALLTEXT', 'MEDIUMTEXT', 'LONGTEXT')
     if colType in texts:
         return 'TEXT'
-    blobs = ('TINYBLOB', 'SMALLBLOB', 'MEDIUMBLOB', 'LONGBLOB', 'BYTE', 'BYTES')
+    blobs = ('TINYBLOB', 'SMALLBLOB', 'MEDIUMBLOB', 'LONGBLOB', 'BYTE', 'BYTES', 'UUID')
     if colType in blobs:
         return 'BLOB'
     res = re.search(r'VARCHAR\([0-9]+\)', colType)
