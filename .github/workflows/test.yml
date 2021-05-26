@@ -45,10 +45,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           poetry run coveralls --service=github
-  readme_conversion:
+  touch_readme:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Convert README
         run:
-          for i in {1..3}; do sed -i '$d' README.md; done && echo -e '\n\n' >> README.md && date >> README.md && sudo apt install pandoc -y && pandoc -f markdown -t rst -o READMEnew.rst README.md && cmp --silent README.rst READMEnew.rst || mv -f READMEnew.rst README.rst && touch READMEnew.rst && rm READMEnew.rst && git config --global user.name 'Dave VanderWeele' && git config --global user.email 'weele.me@gmail.com' && git add . && git commit -m "Readme Conversion" && git push
+          for i in {1..3}; do sed -i '$d' README.md; done && echo -e '\n\n' >> README.md && date >> README.md && git config --global user.name 'Dave VanderWeele' && git config --global user.email 'weele.me@gmail.com' && git add . && git commit -m "GitHub CI Touched README.md" && git push

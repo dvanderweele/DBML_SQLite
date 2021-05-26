@@ -1,9 +1,13 @@
 ![DBML_SQLite](https://github.com/dvanderweele/DBML_SQLite/actions/workflows/test.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/dvanderweele/DBML_SQLite/badge.svg?branch=main)](https://coveralls.io/github/dvanderweele/DBML_SQLite?branch=main)
+![PyPI](https://img.shields.io/pypi/v/DBML_SQLite)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dvanderweele/DBML_SQLite)
+![PyPI -Wheel](https://img.shields.io/pypi/wheel/DBML_SQLite) 
+![PyPI -Python Version](https://img.shields.io/pypi/pyversions/DBML_SQLite) 
+![License -MIT](https://img.shields.io/badge/License-MIT-blue)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/DBML_SQLite)
 
 # *dbml_sqlite*
-
-**v0.2.5**
 
 This is a simple package built on top of [the PyDBML package by Vanderhoof](https://github.com/Vanderhoof/PyDBML). It allows you, within certain constraints, to generate valid SQLite from `.dbml` files for your Python programs.
 
@@ -376,10 +380,6 @@ Given a colType, coerce to closest native SQLite type and return that, otherwise
 + [Database Markup Language — DBML](https://www.dbml.org/home/#intro)
 + [SQLite Official](https://sqlite.org/index.html)
 + [SQLite3 Python Library](https://docs.python.org/3/library/sqlite3.html)
-
-
-
-
 
 
 
