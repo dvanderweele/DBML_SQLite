@@ -47,7 +47,7 @@ def SQLogger(inp):
         s.write(inp)
 
 def test_version():
-    assert __version__ == '0.3.2'
+    assert __version__ == '0.3.3'
 
 def test_toSQLite():
     assert isinstance(toSQLite(), str)
@@ -87,6 +87,7 @@ def test_process_column():
     i2 = MockItem('i2')
     e1 = MockEnum('e1', [i1, i2])
     c5 = MockColumn('c5', e1, False, True, False, None)
+    c6 = MockColumn('c6', 'REAL', False, True, False, 12.345)
     with pytest.raises(TypeError):
         processColumn(c1, 'full')
     assert processColumn(c2, 'full') == '  c2 INTEGER PRIMARY KEY'
@@ -94,6 +95,7 @@ def test_process_column():
     assert processColumn(c4, 'full') == '  c4 TEXT DEFAULT \'howdy\''
     assert processColumn(c5, 'full') == '  c5 TEXT NOT NULL REFERENCES e1(type)'
     assert processColumn(c5, 'half') == '  c5 TEXT CHECK( c5 IN ( \'i1\', \'i2\' ) ) NOT NULL'
+    assert processColumn(c6, 'full') == '  c6 REAL NOT NULL DEFAULT 12.345'
 
 def test_process_ref():
     fc = MockColumn('foreign_key', None, None, None, None, None)

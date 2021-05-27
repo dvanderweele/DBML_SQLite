@@ -218,7 +218,14 @@ def processColumn(column, emulationMode, join=True):
         if column.unique:
             segments.append(' UNIQUE')
         if column.default != None:
-            segments.append(f' DEFAULT \'{column.default}\'')
+            segments.append(' DEFAULT ')
+            if isinstance(column.default, str):
+                segments.append("'")
+                segments.append(column.default)
+            else:
+                segments.append(str(column.default))
+            if isinstance(column.default, str):
+                segments.append("'")
     elif isinstance(column.type, Enum):
         if emulationMode == 'full':
             segments.append(f' TEXT NOT NULL REFERENCES {column.type.name}(type)')
