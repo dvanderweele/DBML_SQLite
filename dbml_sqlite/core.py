@@ -1,3 +1,4 @@
+from ast import IsNot
 import re
 import os
 import uuid
@@ -82,6 +83,7 @@ def processFile(target, emulationMode, tableExists=True, indexExists=True, idxNa
     for table in parsed.tables:
         for index in table.indexes:
             statements.append(processIndex(table, index, idxNameFunc, indexExists=indexExists, join=False))
+            break # We just need a single multi-field primary key
     statements = list(chain.from_iterable(statements))
     if join:
         statements = "".join(statements)
@@ -167,6 +169,11 @@ def processTable(table, emulationMode, tableExists=True, join=True):
         segments.append(processRef(ref, False))
         if j < len(table.refs) - 1:
             segments.append(',\n')
+    if hasattr(table, 'indexes'):
+        for k, index in enumerate(table.indexes):
+            if(index.pk):
+                segments.append(',\n')
+                segments.append(index.sql)
     segments.append('\n);\n')
     segments = list(chain.from_iterable(segments))
     if join:
