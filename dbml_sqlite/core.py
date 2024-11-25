@@ -213,6 +213,8 @@ def processColumn(column, emulationMode, join=True):
         segments.append(f' {coerceColType(column.type)}')
         if column.pk:
             segments.append(' PRIMARY KEY')
+            if column.autoinc:
+                segments.append(' AUTOINCREMENT')
         if column.not_null:
             segments.append(' NOT NULL')
         if column.unique:
